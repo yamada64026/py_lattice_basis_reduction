@@ -32,3 +32,10 @@ The trade-off: this library uses exact rational arithmetic (`fractions.Fraction`
 * **`delta` outside `(1/4, 1]`** raises `ValueError`.  We reject rather than clamp, because passing `delta=0` almost always means a caller mistake.
 * **Linearly dependent basis vectors** are accepted; the reduced output will contain a zero vector in the dependent position.
 * All returned entries are Python `int` (never `float`), even though the computation internally uses `Fraction`.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
